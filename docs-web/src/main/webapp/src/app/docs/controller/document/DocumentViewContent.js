@@ -178,7 +178,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
    * Rename a file.
    */
   $scope.renameFile = function (file) {
-    console.log('hi');
     $uibModal.open({
       templateUrl: 'partial/docs/file.rename.html',
       controller: 'FileRename',
@@ -188,7 +187,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
         }
       }
     }).result.then(function (fileUpdated) {
-      console.log('hi');
       if (fileUpdated === null) {
         return;
       }
@@ -206,27 +204,25 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
    * Rename a file.
    */
    $scope.addFileComment = function (file) {
-    console.log('hi');
     $uibModal.open({
-      templateUrl: 'partial/docs/file.rename.html',
-      controller: 'FileRename',
+      templateUrl: 'partial/docs/file.add.comment.html',
+      controller: 'FileAddComment',
       resolve: {
         file: function () {
           return angular.copy(file);
         }
       }
     }).result.then(function (fileUpdated) {
-      console.log('hi');
       if (fileUpdated === null) {
         return;
       }
 
-      // Rename the file
-      Restangular.one('file/' + file.id).post('', {
-        name: fileUpdated.name
-      }).then(function () {
-        file.name = fileUpdated.name;
-      })
+      file.activityRating = fileUpdated.activityRating;
+      file.experienceRating = fileUpdated.experienceRating;
+      file.awardsRating = fileUpdated.awardsRating;
+      file.academicRating = fileUpdated.academicRating;
+      file.comment = fileUpdated.comment;
+      file.overallRating = fileUpdated.overallRating;
     });
   };
 
