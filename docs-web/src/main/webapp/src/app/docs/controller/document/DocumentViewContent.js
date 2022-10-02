@@ -178,6 +178,7 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
    * Rename a file.
    */
   $scope.renameFile = function (file) {
+    console.log('hi');
     $uibModal.open({
       templateUrl: 'partial/docs/file.rename.html',
       controller: 'FileRename',
@@ -187,6 +188,35 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
         }
       }
     }).result.then(function (fileUpdated) {
+      console.log('hi');
+      if (fileUpdated === null) {
+        return;
+      }
+
+      // Rename the file
+      Restangular.one('file/' + file.id).post('', {
+        name: fileUpdated.name
+      }).then(function () {
+        file.name = fileUpdated.name;
+      })
+    });
+  };
+
+  /**
+   * Rename a file.
+   */
+   $scope.addFileComment = function (file) {
+    console.log('hi');
+    $uibModal.open({
+      templateUrl: 'partial/docs/file.rename.html',
+      controller: 'FileRename',
+      resolve: {
+        file: function () {
+          return angular.copy(file);
+        }
+      }
+    }).result.then(function (fileUpdated) {
+      console.log('hi');
       if (fileUpdated === null) {
         return;
       }
@@ -213,6 +243,7 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
    * Open versions history.
    */
   $scope.openVersions = function (file) {
+    console.log('hi')
     $uibModal.open({
       templateUrl: 'partial/docs/file.versions.html',
       controller: 'ModalFileVersions',
