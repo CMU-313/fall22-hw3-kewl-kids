@@ -201,6 +201,32 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
   };
 
   /**
+   * Rename a file.
+   */
+   $scope.addFileComment = function (file) {
+    $uibModal.open({
+      templateUrl: 'partial/docs/file.add.comment.html',
+      controller: 'FileAddComment',
+      resolve: {
+        file: function () {
+          return angular.copy(file);
+        }
+      }
+    }).result.then(function (fileUpdated) {
+      if (fileUpdated === null) {
+        return;
+      }
+
+      file.activityRating = fileUpdated.activityRating;
+      file.experienceRating = fileUpdated.experienceRating;
+      file.awardsRating = fileUpdated.awardsRating;
+      file.academicRating = fileUpdated.academicRating;
+      file.comment = fileUpdated.comment;
+      file.overallRating = fileUpdated.overallRating;
+    });
+  };
+
+  /**
    * Process a file.
    */
   $scope.processFile = function (file) {
@@ -213,6 +239,7 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
    * Open versions history.
    */
   $scope.openVersions = function (file) {
+    console.log('hi')
     $uibModal.open({
       templateUrl: 'partial/docs/file.versions.html',
       controller: 'ModalFileVersions',
