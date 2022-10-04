@@ -91,6 +91,13 @@
               </button>
               <ul class="dropdown-menu" uib-dropdown-menu>
                 <li>
+                  <a href ng-click="addFileComment(file)">
+                    <span class="fas fa-comment"></span>
+                    Add Comment
+                  </a>
+                </li>
+                <li role="separator" class="divider"></li> 
+                <li>
                   <a ng-href="../api/file/{{ file.id }}/data" target="_blank">
                     <span class="fas fa-download"></span>
                     {{ 'download' | translate }}

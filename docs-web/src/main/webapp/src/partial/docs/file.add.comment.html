@@ -1,0 +1,48 @@
+<div class="modal-header">
+    <h3>Add Comment</h3>
+  </div>
+  <form name="fileForm" novalidate>
+    <div class="modal-body">
+      <div style="display:flex; justify-content:space-between;">
+        <span>Academics: {{academicRating}}</span>
+        <div class="slidecontainer" style="margin-left:50px; width:300px;">
+          <input type="range" min="1" max="10" value="5" class="slider" id="myRange" ng-model="academicRating">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top: 10px">
+        <span>Activities and Extracurriculars: {{activityRating}}</span>
+        <div class="slidecontainer" style="margin-left:50px; width:300px;">
+          <input type="range" min="1" max="10" value="5" class="slider" id="myRange" ng-model="activityRating">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top: 10px">
+        <span>Work and Volunteering: {{experienceRating}}</span>
+        <div class="slidecontainer" style="margin-left:50px; width:300px;">
+          <input type="range" min="1" max="10" value="5" class="slider" id="myRange" ng-model="experienceRating">
+        </div>
+      </div>
+      <div style="display:flex; justify-content: space-between; margin-top: 10px">
+        <span>Awards: {{awardsRating}}</span>
+        <div class="slidecontainer" style="margin-left:50px; width:300px">
+          <input type="range" min="1" max="10" value="5" class="slider" id="myRange" ng-model="awardsRating">
+        </div>
+      </div>
+      <div style="display:flex; justify-content:space-between; margin-top: 10px">
+        <span>Overall: {{overallRating}}</span>
+        <div class="slidecontainer" style="margin-left:50px; width:300px;">
+          <input type="range" min="1" max="10" value="5" class="slider" id="myRange" ng-model="overallRating">
+        </div>
+      </div>
+      <textarea name="name" ng-attr-placeholder="Add Comment" class="form-control"
+             ng-maxlength="1000" ng-model="file.comment" style="resize:none; height:200px; margin-top: 10px;">
+      </textarea>
+      <span class="text-danger" ng-show="fileForm.name.$error.maxlength && fileForm.$dirty">{{ 'validation.too_long' | translate }}</span>
+    </div>
+    <div class="modal-footer">
+      <button ng-click="close(file)" ng-disabled="!fileForm.$valid" class="btn btn-primary">
+        <span class="fas fa-pencil-alt"></span> {{ 'save' | translate }}
+      </button>
+      <button ng-click="close(null)" class="btn btn-default">{{ 'cancel' | translate }}</button>
+    </div>
+  </form>
+  
