@@ -1,7 +1,7 @@
 'use strict';
 
 /**
- * File rename controller.
+ * File add comment controller.
  */
 angular.module('docs').controller('FileAddComment', function ($scope, file, $uibModalInstance) {
   $scope.file = file;

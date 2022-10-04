@@ -201,7 +201,7 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
   };
 
   /**
-   * Rename a file.
+   * Add file comment.
    */
    $scope.addFileComment = function (file) {
     $uibModal.open({
@@ -224,6 +224,23 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
       file.comment = fileUpdated.comment;
       file.overallRating = fileUpdated.overallRating;
     });
+  };
+
+  /**
+  * View File Comment.
+  */
+  $scope.viewFileComment = function (file) {
+    $uibModal.open({
+      windowClass: 'modal modal-fileview',
+      templateUrl: 'partial/docs/file.view.comment.html',
+      controller: 'FileViewComment',
+      size: 'lg',
+      resolve: {
+        file: function () {
+          return file;
+        }
+      }
+    })
   };
 
   /**
