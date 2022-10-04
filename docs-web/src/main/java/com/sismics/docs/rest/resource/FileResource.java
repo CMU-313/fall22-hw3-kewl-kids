@@ -7,13 +7,16 @@ import com.sismics.docs.core.constant.PermType;
 import com.sismics.docs.core.dao.AclDao;
 import com.sismics.docs.core.dao.DocumentDao;
 import com.sismics.docs.core.dao.FileDao;
+import com.sismics.docs.core.dao.FileRatingDao;
 import com.sismics.docs.core.dao.UserDao;
 import com.sismics.docs.core.dao.dto.DocumentDto;
+import com.sismics.docs.core.dao.dto.FileRatingDto;
 import com.sismics.docs.core.event.DocumentUpdatedAsyncEvent;
 import com.sismics.docs.core.event.FileDeletedAsyncEvent;
 import com.sismics.docs.core.event.FileUpdatedAsyncEvent;
 import com.sismics.docs.core.model.context.AppContext;
 import com.sismics.docs.core.model.jpa.File;
+import com.sismics.docs.core.model.jpa.FileRating;
 import com.sismics.docs.core.model.jpa.User;
 import com.sismics.docs.core.util.DirectoryUtil;
 import com.sismics.docs.core.util.EncryptionUtil;
@@ -263,6 +266,159 @@ public class FileResource extends BaseResource {
         // Always return OK
         JsonObjectBuilder response = Json.createObjectBuilder()
                 .add("status", "ok");
+        return Response.ok().entity(response.build()).build();
+    }
+
+    /**
+     * Add rating to a file.
+     *
+     * @api {put} /file/:id add rating to a file
+     * @apiName PutFileRating
+     * @apiGroup FileRating
+     * @apiParam {String} id File ID
+     * @apiParam {Integer} academic Academic Score,
+     * @apiParam {Integer} activites Activities Score,
+     * @apiParam {Integer} experience Experience Score,
+     * @apiParam {Integer} awards Awards Score,
+     * @apiParam {Integer} overall Overall Score,
+     * @apiParam {String} comment Reviewer's Comment,
+     * @apiParam {String} reviewer Reviewer User ID,
+     * @apiSuccess {String} status Status OK
+     * @apiError (client) ForbiddenError Access denied
+     * @apiError (client) ValidationError Validation error
+     * @apiError (client) AlreadyExistsError Already Exists error (user has already submitted a rating) 
+     * @apiPermission user
+     * @apiVersion 1.6.0
+     *
+     * @param id File ID
+     * @return Response
+     */
+    @PUT
+    @Path("{id: [a-z0-9\\-]+}/rating")
+    public Response addRating(
+        @PathParam("id") String id,
+        @FormParam("academic") String academics,
+        @FormParam("activities") String activities,
+        @FormParam("experience") String experience,
+        @FormParam("awards") String awards,
+        @FormParam("overall") String overall,
+        @FormParam("comment") String comment
+    ) {
+        if (!authenticate()) {
+            throw new ForbiddenClientException();
+        }
+
+        Integer academics_score = Integer.parseInt(academics);
+        Integer activities_score = Integer.parseInt(activities);
+        Integer experience_score = Integer.parseInt(experience);
+        Integer awards_score = Integer.parseInt(awards);
+        Integer overall_score = Integer.parseInt(overall);
+
+        // Validate input data
+        ValidationUtil.validateRequired(id, "id");
+        ValidationUtil.validateIntegerRange(academics_score, "academic", 1, 10);
+        ValidationUtil.validateIntegerRange(activities_score, "activities", 1, 10);
+        ValidationUtil.validateIntegerRange(experience_score, "experience", 1, 10);
+        ValidationUtil.validateIntegerRange(awards_score, "awards", 1, 10);
+        ValidationUtil.validateIntegerRange(overall_score, "overall", 1, 10);
+        ValidationUtil.validateRequired(comment, "comment");
+
+
+        // Get the document and the file
+        FileRatingDao fileRatingDao = new FileRatingDao();
+
+        // if rating already exists, raise an AlreadyExistsError
+        List<FileRating> fileRatings = fileRatingDao.getByFileId(id);
+
+        for (FileRating fr: fileRatings) {
+            if (principal.getId() == fr.getUserId()) {
+                // Throw already exists error? I just add a boolean flag for it instead.
+                JsonObjectBuilder response = Json.createObjectBuilder()
+                .add("status", "ok")
+                .add("rating_exists", true);
+                return Response.ok().entity(response.build()).build();
+            }
+        }
+
+        FileRating fileRating = new FileRating();
+        fileRating.setFileId(id);
+        fileRating.setAcademics(academics_score);
+        fileRating.setActivities(activities_score);
+        fileRating.setExperience(experience_score);
+        fileRating.setAwards(awards_score);
+        fileRating.setOverall(overall_score);
+        fileRating.setComment(comment);
+        fileRating.setUserId(principal.getId());
+
+        fileRatingDao.create(
+            fileRating,
+            principal.getId()
+        );
+
+        // Always return OK
+        JsonObjectBuilder response = Json.createObjectBuilder()
+                .add("status", "ok")
+                .add("rating_exists", false);
+        return Response.ok().entity(response.build()).build();
+    }
+
+    /**
+     * Returns files ratings linked to a document.
+     *
+     * @api {get} /file/:id/rating/list Get file ratings
+     * @apiName GetFileRatingList
+     * @apiGroup FileRating
+     * @apiParam {String} id File ID
+     * @apiSuccess {Object[]} file_ratings List of file ratings
+     * @apiSuccess {String} fileRating.id ID
+     * @apiSuccess {Integer} fileRating.academics Academics score
+     * @apiSuccess {Integer} fileRating.activities Activities score
+     * @apiSuccess {Integer} fileRating.experience Experience score
+     * @apiSuccess {Integer} fileRating.awards Awards score
+     * @apiSuccess {Integer} fileRating.overall Overall score
+     * @apiSuccess {String} fileRating.comment comment
+     * @apiSuccess {Number} fileRating.create_date Create date (timestamp)
+     * @apiSuccess {String} fileRating.creator_name Creator Name
+     * @apiError (client) ForbiddenError Access denied
+     * @apiError (client) NotFound Document not found
+     * @apiError (server) FileError Unable to get the size of a file
+     * @apiPermission none
+     * @apiVersion 1.5.0
+     *
+     * @param documentId Document ID
+     * @param shareId Sharing ID
+     * @return Response
+     */
+    @GET
+    @Path("{id: [a-z0-9\\-]+}/rating/list")
+    public Response list(
+            @PathParam("id") String fileId
+        ) {
+        boolean authenticated = authenticate();
+        
+        if (!authenticated) {
+            throw new ForbiddenClientException();
+        }
+
+        FileRatingDao fileRatingDao = new FileRatingDao();
+        JsonArrayBuilder ratings = Json.createArrayBuilder();
+        for (FileRatingDto fileRatingDto : fileRatingDao.getDtoByFileId(fileId)) {
+            ratings.add(
+                Json.createObjectBuilder()
+                .add("id", fileRatingDto.getId())
+                .add("academics", fileRatingDto.getAcademics())
+                .add("activities", fileRatingDto.getActivities())
+                .add("experience", fileRatingDto.getExperience())
+                .add("awards", fileRatingDto.getAwards())
+                .add("overall", fileRatingDto.getOverall())
+                .add("comment", fileRatingDto.getComment())
+                .add("create_date", fileRatingDto.getCreateTimestamp())
+                .add("creator_name", fileRatingDto.getCreatorName())
+            );
+        }
+        JsonObjectBuilder response = Json.createObjectBuilder()
+                .add("file_ratings", ratings);
+
         return Response.ok().entity(response.build()).build();
     }
 
