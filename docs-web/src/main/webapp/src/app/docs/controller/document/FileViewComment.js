@@ -22,6 +22,4 @@
     $scope.push = function () {
         $scope.comments.push($scope.newComment);
     };
-
-
  });
