@@ -125,7 +125,7 @@ public class FileRatingDao {
     public List<FileRating> getByFileId(String fileId) {
         EntityManager em = ThreadLocalContext.get().getEntityManager();
         TypedQuery<FileRating> q = em.createQuery(
-                "select r from FileRating r where r.RAT_IDFIL_C = :fileId and r.RAT_DELETEDATE_D is null order by r.RAT_CREATEDATE_D asc ",
+                "select r from FileRating r where r.fileId = :fileId and r.deleteDate is null order by r.createDate asc ",
                 FileRating.class);
         q.setParameter("fileId", fileId);
         return q.getResultList();

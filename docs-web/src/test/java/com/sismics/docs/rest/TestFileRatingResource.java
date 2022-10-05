@@ -47,10 +47,10 @@ public class TestFileRatingResource extends BaseJerseyTest {
                 );
         
         Assert.assertEquals("ok", json.getString("status"));
-        Assert.assertEquals("false", json.getString("rating_exists"));
+        Assert.assertEquals(false, json.getBoolean("rating_exists"));
 
         // Get all ratings from file1, should have 1
-        json = target().path("/file/" + file1Id + "list")
+        json = target().path("/file/" + file1Id + "/rating/list")
                 .request()
                 .cookie(TokenBasedSecurityFilter.COOKIE_NAME, file1Token)
                 .get(JsonObject.class);
@@ -77,10 +77,10 @@ public class TestFileRatingResource extends BaseJerseyTest {
                 );
         
         Assert.assertEquals("ok", json.getString("status"));
-        Assert.assertEquals("true", json.getString("rating_exists"));
+        Assert.assertEquals(true, json.getBoolean("rating_exists"));
 
         // Get all ratings from file1, should be same as before
-        json = target().path("/file/" + file1Id + "list")
+        json = target().path("/file/" + file1Id + "/rating/list")
                 .request()
                 .cookie(TokenBasedSecurityFilter.COOKIE_NAME, file1Token)
                 .get(JsonObject.class);
@@ -94,12 +94,11 @@ public class TestFileRatingResource extends BaseJerseyTest {
         Assert.assertEquals("test_comment", fileRatings.getJsonObject(0).getString("comment"));
 
         // Get all ratings from File2, should be empty list
-        json = target().path("/file/" + file2Id + "list")
+        json = target().path("/file/" + file2Id + "/rating/list")
         .request()
         .cookie(TokenBasedSecurityFilter.COOKIE_NAME, file1Token)
         .get(JsonObject.class);
         fileRatings = json.getJsonArray("file_ratings");
         Assert.assertEquals(0, fileRatings.size());
-
     }
 }

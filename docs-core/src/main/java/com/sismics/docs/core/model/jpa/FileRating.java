@@ -13,7 +13,7 @@ import com.google.common.base.MoreObjects;
  * Rating entity.
  */
 @Entity
-@Table(name = "T_FIL_RATING")
+@Table(name = "T_FILE_RATING")
 public class FileRating implements Loggable {
     /**
      * Rating ID.
@@ -36,7 +36,6 @@ public class FileRating implements Loggable {
 
     /**
      * Academics rating.
-     * Integer (Java) -> decimal (SQL) 
      */
     @Column(name = "RAT_ACADEMICS_C", nullable = false)
     private Integer academics;
