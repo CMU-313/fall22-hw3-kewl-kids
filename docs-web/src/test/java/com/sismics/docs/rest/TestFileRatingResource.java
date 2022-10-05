@@ -99,13 +99,7 @@ public class TestFileRatingResource extends BaseJerseyTest {
         .cookie(TokenBasedSecurityFilter.COOKIE_NAME, file1Token)
         .get(JsonObject.class);
         fileRatings = json.getJsonArray("file_ratings");
-        Assert.assertEquals(1, fileRatings.size());
-
-        // Deletes a file
-        json = target().path("/file/" + file1Id).request()
-                .cookie(TokenBasedSecurityFilter.COOKIE_NAME, file1Token)
-                .delete(JsonObject.class);
-        Assert.assertEquals("ok", json.getString("status"));
+        Assert.assertEquals(0, fileRatings.size());
 
     }
 }
