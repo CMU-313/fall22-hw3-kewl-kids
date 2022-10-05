@@ -1,14 +1,6 @@
 package com.sismics.docs.rest;
 
-import com.google.common.io.ByteStreams;
-import com.google.common.io.Resources;
-import com.sismics.docs.core.util.DirectoryUtil;
 import com.sismics.util.filter.TokenBasedSecurityFilter;
-import com.sismics.util.mime.MimeType;
-import com.sismics.util.mime.MimeTypeUtil;
-import org.glassfish.jersey.media.multipart.FormDataMultiPart;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
-import org.glassfish.jersey.media.multipart.file.StreamDataBodyPart;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -16,27 +8,20 @@ import javax.json.JsonArray;
 import javax.json.JsonObject;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.Date;
 
 /**
- * Exhaustive test of the file resource.
+ * Exhaustive test of the file rating resource.
  * 
- * @author bgamard
+ * @author mzhou08
  */
 public class TestFileRatingResource extends BaseJerseyTest {
     /**
-     * Test the file resource.
+     * Test the file rating resource.
      * 
      * @throws Exception e
      */
     @Test
-    public void testFileResource() throws Exception {
+    public void testFileRatingResource() throws Exception {
         // Login file_resources
         clientUtil.createUser("file_resources");
         String file1Token = clientUtil.login("file_resources");
