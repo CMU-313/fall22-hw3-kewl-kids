@@ -221,4 +221,27 @@ public class ValidationUtil {
             throw new ClientException("ValidationError", MessageFormat.format("{0} must be a date", name));
         }
     }
+
+    /**
+     * Checks if Integer is within a certain range.
+     * 
+     * @param n Integer to validate
+     * @param name Name of the parameter
+     * @param rangeMin Minimum value (or null)
+     * @param rangeMax Maximum value (or null)
+     * @return n
+     * @throws ClientException
+     */
+    public static Integer validateIntegerRange(Integer n, String name, Integer rangeMin, Integer rangeMax) throws ClientException {
+        if (n == null) {
+            throw new ClientException("ValidationError", MessageFormat.format("{0} must be set", name));
+        }
+        if (rangeMin != null && n < rangeMin) {
+            throw new ClientException("ValidationError", MessageFormat.format("{0} must be at least {1}", name, rangeMin));
+        }
+        if (rangeMax != null && n > rangeMax) {
+            throw new ClientException("ValidationError", MessageFormat.format("{0} must be at most {1}", name, rangeMax));
+        }
+        return n;
+    }
 }
