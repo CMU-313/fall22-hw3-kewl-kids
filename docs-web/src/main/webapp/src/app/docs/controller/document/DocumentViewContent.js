@@ -216,7 +216,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
       if (fileUpdated === null) {
         return;
       }
-      console.log("" + fileUpdated.academicRating)
       Restangular.one('file/' + file.id + '/rating').put({
         id: file.id,
         academic: "" + fileUpdated.academicRating,
@@ -235,7 +234,8 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
   $scope.viewFileComment = function (file) {
     Restangular.one('file/' + file.id + '/rating/list').get()
       .then(function (res) {
-        console.log(res);
+        console.log(res.file_ratings);
+        $scope.comments = res.file_ratings;
       });
     $uibModal.open({
       windowClass: 'modal modal-fileview',
