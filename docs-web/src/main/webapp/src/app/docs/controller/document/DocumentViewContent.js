@@ -217,7 +217,7 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
         return;
       }
       console.log("" + fileUpdated.academicRating)
-      Restangular.one('file/' + file.id + '/rating').post('', {
+      Restangular.one('file/' + file.id + '/rating').put('', {
         academic: "" + fileUpdated.academicRating,
         activities: "" + fileUpdated.activityRating,
         experience: "" + fileUpdated.experienceRating,
