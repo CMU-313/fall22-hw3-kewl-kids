@@ -212,19 +212,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
           return angular.copy(file);
         }
       }
-    }).result.then(function (fileUpdated) {
-      if (fileUpdated === null) {
-        return;
-      }
-      Restangular.one('file/' + file.id + '/rating').put({
-        id: file.id,
-        academic: "" + fileUpdated.academicRating,
-        activities: "" + fileUpdated.activityRating,
-        experience: "" + fileUpdated.experienceRating,
-        awards: "" + fileUpdated.awardsRating,
-        overall: "" + fileUpdated.overallRating,
-        comment: "" + fileUpdated.comment,
-      });
     });
   };
 
@@ -232,11 +219,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
   * View File Comment.
   */
   $scope.viewFileComment = function (file) {
-    Restangular.one('file/' + file.id + '/rating/list').get()
-      .then(function (res) {
-        console.log(res.file_ratings);
-        $scope.comments = res.file_ratings;
-      });
     $uibModal.open({
       windowClass: 'modal modal-fileview',
       templateUrl: 'partial/docs/file.view.comment.html',

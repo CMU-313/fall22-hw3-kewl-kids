@@ -296,7 +296,7 @@ public class FileResource extends BaseResource {
     @PUT
     @Path("{id: [a-z0-9\\-]+}/rating")
     public Response addRating(
-        @FormParam("id") String id,
+        @PathParam("id") String id,
         @FormParam("academic") String academics,
         @FormParam("activities") String activities,
         @FormParam("experience") String experience,

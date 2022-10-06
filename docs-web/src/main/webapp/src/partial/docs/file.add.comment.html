@@ -1,5 +1,6 @@
 <div class="modal-header">
     <h3>Add Comment</h3>
+    <h4 ng-show="ratingExists" style="color: red;">Comment already exists</h4>
   </div>
   <form name="fileForm" novalidate>
     <div class="modal-body">
@@ -39,10 +40,10 @@
       <span class="text-danger" ng-show="fileForm.name.$error.maxlength && fileForm.$dirty">{{ 'validation.too_long' | translate }}</span>
     </div>
     <div class="modal-footer">
-      <button ng-click="close(file)" ng-disabled="!fileForm.$valid" class="btn btn-primary">
+      <button ng-click="close(false)" ng-disabled="!fileForm.$valid" class="btn btn-primary">
         <span class="fas fa-pencil-alt"></span> {{ 'save' | translate }}
       </button>
-      <button ng-click="close(null)" class="btn btn-default">{{ 'cancel' | translate }}</button>
+      <button ng-click="close(true)" class="btn btn-default">{{ 'cancel' | translate }}</button>
     </div>
   </form>
   
