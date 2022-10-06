@@ -293,7 +293,7 @@ public class FileResource extends BaseResource {
      * @param id File ID
      * @return Response
      */
-    @PUT
+    @POST
     @Path("{id: [a-z0-9\\-]+}/rating")
     public Response addRating(
         @PathParam("id") String id,
@@ -304,6 +304,7 @@ public class FileResource extends BaseResource {
         @FormParam("overall") String overall,
         @FormParam("comment") String comment
     ) {
+        System.out.println("academics: " + academics);
         if (!authenticate()) {
             throw new ForbiddenClientException();
         }

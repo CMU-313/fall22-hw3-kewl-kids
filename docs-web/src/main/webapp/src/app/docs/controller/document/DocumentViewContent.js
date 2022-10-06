@@ -216,13 +216,15 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
       if (fileUpdated === null) {
         return;
       }
-
-      file.activityRating = fileUpdated.activityRating;
-      file.experienceRating = fileUpdated.experienceRating;
-      file.awardsRating = fileUpdated.awardsRating;
-      file.academicRating = fileUpdated.academicRating;
-      file.comment = fileUpdated.comment;
-      file.overallRating = fileUpdated.overallRating;
+      console.log("" + fileUpdated.academicRating)
+      Restangular.one('file/' + file.id + '/rating').post('', {
+        academic: "" + fileUpdated.academicRating,
+        activities: "" + fileUpdated.activityRating,
+        experience: "" + fileUpdated.experienceRating,
+        awards: "" + fileUpdated.awardsRating,
+        overall: "" + fileUpdated.overallRating,
+        comment: "" + fileUpdated.comment,
+      });
     });
   };
 
@@ -230,6 +232,10 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
   * View File Comment.
   */
   $scope.viewFileComment = function (file) {
+    Restangular.one('file/' + file.id + '/rating/list').get()
+      .then(function (res) {
+        console.log(res);
+      });
     $uibModal.open({
       windowClass: 'modal modal-fileview',
       templateUrl: 'partial/docs/file.view.comment.html',
@@ -256,7 +262,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
    * Open versions history.
    */
   $scope.openVersions = function (file) {
-    console.log('hi')
     $uibModal.open({
       templateUrl: 'partial/docs/file.versions.html',
       controller: 'ModalFileVersions',
