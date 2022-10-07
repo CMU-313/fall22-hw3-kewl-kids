@@ -8,6 +8,7 @@
     Restangular.one('file/' + file.id + '/rating/list').get()
       .then(function (res) {
         const fileRatings = res.file_ratings;
+        $scope.file = file;
         $scope.comments = fileRatings.map(rating => {
           return {
             academicRating: rating.academics,

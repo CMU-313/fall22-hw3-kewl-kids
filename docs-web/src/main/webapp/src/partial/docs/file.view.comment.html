@@ -5,23 +5,24 @@
 <div class="modal-body">
     <div style="display:flex;  justify-content: center; flex: 2 1 0px">
         <!-- The part of the thumbnail view -->
-        <div style="margin-right:50px;">
-        <div class="file-processing-indicator" ng-show="file.processing"
-            uib-tooltip="{{ 'document.view.content.file_processing_indicator' | translate }}">
-          <span class="fas fa-spin fa-circle-notch"></span>
-        </div>
+        <div style="margin-right:50px; flex-shrink: 2;">
+            <div class="file-processing-indicator" ng-show="file.processing"
+                uib-tooltip="{{ 'document.view.content.file_processing_indicator' | translate }}">
+            <span class="fas fa-spin fa-circle-notch"></span>
+            </div>
 
-        <a class="file-thumbnail-view" ng-click="openFile(file, $event)">
-          <img ng-src="../api/file/{{ file.id }}/data?size=thumb" style="height: 65vh; width:50vh; border:3px solid #a6d9f7; border-radius: 5px 5px 5px 5px; margin: 10px 0px 20px 0px;" 
-          uib-tooltip="{{ file.mimetype }} | {{ file.size | filesize }}" tooltip-placement="top" />
-        </a>
+            <a class="file-thumbnail-view" ng-click="openFile(file, $event)">
+            <img ng-src="../api/file/{{ file.id }}/data?size=web" style="height: 65vh; width:50vh; border:3px solid #a6d9f7; border-radius: 5px 5px 5px 5px; margin: 10px 0px 20px 0px;" 
+            uib-tooltip="{{ file.mimetype }} | {{ file.size | filesize }}" tooltip-placement="top" />
+            </a>
         </div>
         
         
         <div style="display:flex; flex-direction:column; flex-shrink: 2; width: 50vh; height:65vh; overflow:scroll;">
             <div style="display:flex; flex-direction:column; margin: 10px 0px 10px 0px; background-color:aliceblue; 
             border:10px solid #a6d9f7; display: block; border-radius: 5px 5px 5px 5px;" ng-repeat="one in comments">
-                <div style="margin: 10px 20px 0px 20px"><span>Academics: {{one.academicRating}}</span></div>
+                <div style="margin: 10px 20px 0px 20px"><span>User: {{one.name}}</span></div>
+                <div style="margin: 0px 20px 0px 20px"><span>Academics: {{one.academicRating}}</span></div>
                 <div style="margin: 0px 20px 0px 20px"><span>Activities and Extracurriculars: {{one.activityRating}}</span></div>
                 <div style="margin: 0px 20px 0px 20px"><span>Work and Volunteering: {{one.experienceRating}}</span></div>
                 <div style="margin: 0px 20px 0px 20px"><span>Awards: {{one.awardsRating}}</span></div>
