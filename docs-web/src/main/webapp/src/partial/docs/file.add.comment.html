@@ -35,7 +35,7 @@
         </div>
       </div>
       <textarea name="name" ng-attr-placeholder="Add Comment" class="form-control"
-             ng-maxlength="1000" ng-model="file.comment" style="resize:none; height:200px; margin-top: 10px;">
+             ng-maxlength="1000" ng-model="comment" style="resize:none; height:200px; margin-top: 10px;">
       </textarea>
       <span class="text-danger" ng-show="fileForm.name.$error.maxlength && fileForm.$dirty">{{ 'validation.too_long' | translate }}</span>
     </div>

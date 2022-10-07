@@ -9,6 +9,7 @@ angular.module('docs').controller('FileAddComment', function ($scope, file, $uib
       $uibModalInstance.close();
       return;
     }
+    console.log($scope.comment);
     Restangular.one('file/' + file.id + '/rating').put({
       academic: '' + $scope.academicRating,
       activities: '' + $scope.activityRating,

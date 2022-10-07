@@ -9,6 +9,7 @@
       .then(function (res) {
         const fileRatings = res.file_ratings;
         $scope.file = file;
+        console.log(fileRatings);
         $scope.comments = fileRatings.map(rating => {
           return {
             academicRating: rating.academics,
