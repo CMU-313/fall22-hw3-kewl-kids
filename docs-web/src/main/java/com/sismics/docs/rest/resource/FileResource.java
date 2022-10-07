@@ -304,6 +304,7 @@ public class FileResource extends BaseResource {
         @FormParam("overall") String overall,
         @FormParam("comment") String comment
     ) {
+        System.out.println("academics: " + academics);
         if (!authenticate()) {
             throw new ForbiddenClientException();
         }

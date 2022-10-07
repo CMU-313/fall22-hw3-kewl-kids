@@ -4,22 +4,26 @@
  * File view comment controller.
  */
 
- angular.module('docs').controller('FileViewComment', function ($scope, file, $uibModalInstance){
-    $scope.file = file;
-    $scope.close = function(file) {
-    if (file === null) {
-      $uibModalInstance.close(null);
-      return;
+ angular.module('docs').controller('FileViewComment', function ($scope, file, $uibModalInstance, Restangular){
+    Restangular.one('file/' + file.id + '/rating/list').get()
+      .then(function (res) {
+        const fileRatings = res.file_ratings;
+        $scope.file = file;
+        console.log(fileRatings);
+        $scope.comments = fileRatings.map(rating => {
+          return {
+            academicRating: rating.academics,
+            activityRating: rating.activities,
+            awardsRating: rating.awards,
+            comment: rating.comment,
+            experienceRating: rating.experience,
+            overallRating: rating.overall,
+            name: rating.creator_name,
+          };
+        })
+    });  
+
+    $scope.close = function() {
+      $uibModalInstance.close();
     }
-    $uibModalInstance.close(file);
-  }
-  $scope.comments = [{username: "firstu", academicRating: 1, awardsRating: 2, activityRating:3, experienceRating:4, overallRating:5, comment:"hi" },
-    {username: "firstu", academicRating: 3, awardsRating: 3, activityRating:3, experienceRating:4, overallRating:5, comment:"lo" },
-    {username: "firstu", academicRating: 5, awardsRating: 5, activityRating:5, experienceRating:4, overallRating:5, comment:"eee" },
-    {username: "firstu", academicRating: 4, awardsRating: 5, activityRating:5, experienceRating:4, overallRating:5, comment:"xxx fghjh gfdfghgf,, tygvbn mqwertyuio xxfghjh gfdf ghgf,,t ygvbn xxfghjh gfdfghgf,,tygvbn" }  ];
-    //following is draft for push new comments
-    $scope.newComment = {rating: 5};
-    $scope.push = function () {
-        $scope.comments.push($scope.newComment);
-    };
  });

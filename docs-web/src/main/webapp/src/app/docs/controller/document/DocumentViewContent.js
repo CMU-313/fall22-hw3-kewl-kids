@@ -212,17 +212,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
           return angular.copy(file);
         }
       }
-    }).result.then(function (fileUpdated) {
-      if (fileUpdated === null) {
-        return;
-      }
-
-      file.activityRating = fileUpdated.activityRating;
-      file.experienceRating = fileUpdated.experienceRating;
-      file.awardsRating = fileUpdated.awardsRating;
-      file.academicRating = fileUpdated.academicRating;
-      file.comment = fileUpdated.comment;
-      file.overallRating = fileUpdated.overallRating;
     });
   };
 
@@ -256,7 +245,6 @@ angular.module('docs').controller('DocumentViewContent', function ($scope, $root
    * Open versions history.
    */
   $scope.openVersions = function (file) {
-    console.log('hi')
     $uibModal.open({
       templateUrl: 'partial/docs/file.versions.html',
       controller: 'ModalFileVersions',
